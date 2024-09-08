@@ -8,7 +8,7 @@ pipeline {
     options {
         // Wait for 60 seconds before starting the job after a commit is detected
         disableConcurrentBuilds() // Avoid running concurrent jobs
-        quietPeriod(60) // Delay the job execution by 60 seconds 
+        quietPeriod(60) // Delay the job execution by 60 seconds - 
     }
 
     triggers {
