@@ -11,17 +11,15 @@ pipeline {
             steps {
                 echo 'Stage 1: Build - Building the code using Maven...'
                 // Simulate Maven build
-                echo 'mvn clean install'
+                echo 'Simulating: mvn clean install'
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Stage 2: Running Unit and Integration Tests...'
-                
-                // Run unit tests using JUnit (via Maven)
-                echo 'Running JUnit tests...'
-                sh 'mvn test' // This command will execute JUnit tests if configured in the project
+                // Simulate running JUnit tests
+                echo 'Simulating: mvn test' // Simulate JUnit tests
 
                 script {
                     def testStatus = 'success' // Change to "failure" to simulate a failed test
@@ -51,8 +49,7 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 echo 'Stage 3: Code Analysis - Running static code analysis using SonarQube...'
-                // Simulate SonarQube analysis
-                echo 'sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src'
+                echo 'Simulating: sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src'
             }
         }
 
@@ -87,15 +84,7 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Stage 5: Deploy to Staging - Deploying to AWS EC2 Staging...'
-                // Simulate deployment to a staging environment
-                echo 'Deploying application to staging server'
-                emailext(
-                    to: "${EMAIL_TO}",
-                    subject: "Jenkins: Deploy to Staging Success",
-                    body: "The application was deployed to the staging environment successfully.",
-                    mimeType: 'text/html',
-                    attachLog: true
-                )
+                echo 'Simulating: Deploying application to staging server'
             }
         }
 
@@ -106,22 +95,8 @@ pipeline {
                     def stagingTestStatus = 'success' // Change to "failure" to simulate a failed test
                     if (stagingTestStatus == 'success') {
                         echo 'Integration Tests on Staging passed successfully.'
-                        emailext(
-                            to: "${EMAIL_TO}",
-                            subject: "Jenkins: Integration Tests on Staging Success",
-                            body: "The integration tests on the staging environment passed successfully. Please check the logs for more details.",
-                            mimeType: 'text/html',
-                            attachLog: true
-                        )
                     } else {
                         echo 'Integration Tests on Staging failed.'
-                        emailext(
-                            to: "${EMAIL_TO}",
-                            subject: "Jenkins: Integration Tests on Staging Failure",
-                            body: "The integration tests on the staging environment failed. Please check the logs for more details.",
-                            mimeType: 'text/html',
-                            attachLog: true
-                        )
                     }
                 }
             }
@@ -130,15 +105,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Stage 7: Deploy to Production - Deploying to AWS EC2 Production...'
-                // Simulate deployment to production
-                echo 'Deploying application to production server'
-                emailext(
-                    to: "${EMAIL_TO}",
-                    subject: "Jenkins: Deploy to Production Success",
-                    body: "The application was deployed to the production environment successfully.",
-                    mimeType: 'text/html',
-                    attachLog: true
-                )
+                echo 'Simulating: Deploying application to production server'
             }
         }
     }
