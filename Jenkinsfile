@@ -8,12 +8,12 @@ pipeline {
     options {
         // Wait for 60 seconds before starting the job after a commit is detected
         disableConcurrentBuilds() // Avoid running concurrent jobs
-        quietPeriod(60) // Delay the job execution by 60 seconds - 
+        quietPeriod(60) // Delay the job execution by 60 seconds (adjust as needed)
     }
 
     triggers {
         // Automatically trigger the pipeline on changes to the GitHub repository
-        pollSCM('H/2 * * * *') // Poll the repository every 2 minutes for new commits (configured on Jenkins )
+        pollSCM('H/5 * * * *') // Poll the repository every 5 minutes for new commits 
     }
 
     stages {
@@ -35,12 +35,14 @@ pipeline {
                         echo 'Unit and Integration Tests passed successfully.'
                         emailext subject: 'Unit and Integration Tests Success',
                                  to: "${EMAIL}",
-                                 body: "The Unit and Integration Tests stage was successful."
+                                 body: "The Unit and Integration Tests stage was successful.",
+                                 attachLog: true // Attach the build log
                     } else {
                         echo 'Unit and Integration Tests failed.'
                         emailext subject: 'Unit and Integration Tests Failure',
                                  to: "${EMAIL}",
-                                 body: "The Unit and Integration Tests stage failed."
+                                 body: "The Unit and Integration Tests stage failed.",
+                                 attachLog: true // Attach the build log
                     }
                 }
             }
@@ -63,12 +65,14 @@ pipeline {
                         echo 'Security Scan passed successfully.'
                         emailext subject: 'Security Scan Success',
                                  to: "${EMAIL}",
-                                 body: "The Security Scan stage was successful."
+                                 body: "The Security Scan stage was successful.",
+                                 attachLog: true // Attach the build log
                     } else {
                         echo 'Security Scan failed.'
                         emailext subject: 'Security Scan Failure',
                                  to: "${EMAIL}",
-                                 body: "The Security Scan stage failed."
+                                 body: "The Security Scan stage failed.",
+                                 attachLog: true // Attach the build log
                     }
                 }
             }
@@ -100,15 +104,4 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Stage 7: Deploy to Production - Deploying the application to AWS EC2 Production instance...'
-                // Simulate deployment
-                echo 'Deploying to AWS EC2 Production'
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline completed.'
-        }
-    }
-}
+                // Simulate
