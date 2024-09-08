@@ -17,7 +17,12 @@ pipeline {
 
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Stage 2: Unit and Integration Tests...'
+                echo 'Stage 2: Running Unit and Integration Tests...'
+                
+                // Run unit tests using JUnit (via Maven)
+                echo 'Running JUnit tests...'
+                sh 'mvn test' // This command will execute JUnit tests if configured in the project
+
                 script {
                     def testStatus = 'success' // Change to "failure" to simulate a failed test
                     if (testStatus == 'success') {
