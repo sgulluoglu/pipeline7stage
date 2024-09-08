@@ -6,14 +6,12 @@ pipeline {
     }
 
     options {
-        // Wait for 60 seconds before starting the job after a commit is detected
         disableConcurrentBuilds() // Avoid running concurrent jobs
-        quietPeriod(60) // Delay the job execution by 60 seconds (adjust as needed)
+        quietPeriod(60) // Delay the job execution by 60 seconds
     }
 
     triggers {
-        // Automatically trigger the pipeline on changes to the GitHub repository
-        pollSCM('H/5 * * * *') // Poll the repository every 5 minutes for new commits 
+        pollSCM('H/5 * * * *') // Poll the repository every 5 minutes
     }
 
     stages {
@@ -89,7 +87,6 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Stage 6: Integration Tests on Staging - Running integration tests in the staging environment...'
-                // Simulate integration tests
                 script {
                     def stagingTestStatus = 'success' // Change to 'failure' to simulate failure
                     if (stagingTestStatus == 'success') {
@@ -104,4 +101,15 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Stage 7: Deploy to Production - Deploying the application to AWS EC2 Production instance...'
-                // Simulate
+                // Simulate deployment
+                echo 'Deploying to AWS EC2 Production'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+    }
+}
