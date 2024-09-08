@@ -2,16 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EMAIL = 'ssgulluoglu@gmail.com'
-    }
-
-    options {
-        disableConcurrentBuilds() // Avoid running concurrent jobs
-        quietPeriod(60) // Delay the job execution by 60 seconds
-    }
-
-    triggers {
-        pollSCM('H/5 * * * *') // Poll the repository every 5 minutes
+        EMAIL_TO = 'ssgulluoglu@gmail.com' // The recipient for the email notification
     }
 
     stages {
@@ -26,21 +17,27 @@ pipeline {
 
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Stage 2: Unit and Integration Tests - Running tests using JUnit and Selenium...'
+                echo 'Stage 2: Unit and Integration Tests...'
                 script {
-                    def testStatus = 'success' // Change to 'failure' to simulate failure
+                    def testStatus = 'success' // Change to "failure" to simulate a failed test
                     if (testStatus == 'success') {
                         echo 'Unit and Integration Tests passed successfully.'
-                        emailext subject: 'Unit and Integration Tests Success',
-                                 to: "${EMAIL}",
-                                 body: "The Unit and Integration Tests stage was successful.",
-                                 attachLog: true // Attach the build log
+                        emailext(
+                            to: "${EMAIL_TO}",
+                            subject: "Jenkins: Unit and Integration Test Success",
+                            body: "The unit and integration tests passed successfully. Please check the logs for more details.",
+                            mimeType: 'text/html',
+                            attachLog: true
+                        )
                     } else {
                         echo 'Unit and Integration Tests failed.'
-                        emailext subject: 'Unit and Integration Tests Failure',
-                                 to: "${EMAIL}",
-                                 body: "The Unit and Integration Tests stage failed.",
-                                 attachLog: true // Attach the build log
+                        emailext(
+                            to: "${EMAIL_TO}",
+                            subject: "Jenkins: Unit and Integration Test Failure",
+                            body: "The unit and integration tests failed. Please check the logs for more details.",
+                            mimeType: 'text/html',
+                            attachLog: true
+                        )
                     }
                 }
             }
@@ -48,29 +45,35 @@ pipeline {
 
         stage('Code Analysis') {
             steps {
-                echo 'Stage 3: Code Analysis - Running static code analysis using SonarQube with Selenium code...'
+                echo 'Stage 3: Code Analysis - Running static code analysis using SonarQube...'
                 // Simulate SonarQube analysis
-                echo 'sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src -Dsonar.tests=./test -Dsonar.java.binaries=./target/classes'
+                echo 'sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src'
             }
         }
 
         stage('Security Scan') {
             steps {
-                echo 'Stage 4: Security Scan - Scanning code for vulnerabilities using OWASP ZAP...'
+                echo 'Stage 4: Security Scan - Running OWASP ZAP scan...'
                 script {
-                    def securityScanStatus = 'success' // Change to 'failure' to simulate failure
+                    def securityScanStatus = 'success' // Change to "failure" to simulate a failed scan
                     if (securityScanStatus == 'success') {
                         echo 'Security Scan passed successfully.'
-                        emailext subject: 'Security Scan Success',
-                                 to: "${EMAIL}",
-                                 body: "The Security Scan stage was successful.",
-                                 attachLog: true // Attach the build log
+                        emailext(
+                            to: "${EMAIL_TO}",
+                            subject: "Jenkins: Security Scan Success",
+                            body: "The security scan passed successfully. Please check the logs for more details.",
+                            mimeType: 'text/html',
+                            attachLog: true
+                        )
                     } else {
                         echo 'Security Scan failed.'
-                        emailext subject: 'Security Scan Failure',
-                                 to: "${EMAIL}",
-                                 body: "The Security Scan stage failed.",
-                                 attachLog: true // Attach the build log
+                        emailext(
+                            to: "${EMAIL_TO}",
+                            subject: "Jenkins: Security Scan Failure",
+                            body: "The security scan failed. Please check the logs for more details.",
+                            mimeType: 'text/html',
+                            attachLog: true
+                        )
                     }
                 }
             }
@@ -78,21 +81,42 @@ pipeline {
 
         stage('Deploy to Staging') {
             steps {
-                echo 'Stage 5: Deploy to Staging - Deploying the application to AWS EC2 Staging instance...'
-                // Simulate deployment
-                echo 'Deploying to AWS EC2 Staging'
+                echo 'Stage 5: Deploy to Staging - Deploying to AWS EC2 Staging...'
+                // Simulate deployment to a staging environment
+                echo 'Deploying application to staging server'
+                emailext(
+                    to: "${EMAIL_TO}",
+                    subject: "Jenkins: Deploy to Staging Success",
+                    body: "The application was deployed to the staging environment successfully.",
+                    mimeType: 'text/html',
+                    attachLog: true
+                )
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Stage 6: Integration Tests on Staging - Running integration tests in the staging environment...'
+                echo 'Stage 6: Integration Tests on Staging...'
                 script {
-                    def stagingTestStatus = 'success' // Change to 'failure' to simulate failure
+                    def stagingTestStatus = 'success' // Change to "failure" to simulate a failed test
                     if (stagingTestStatus == 'success') {
                         echo 'Integration Tests on Staging passed successfully.'
+                        emailext(
+                            to: "${EMAIL_TO}",
+                            subject: "Jenkins: Integration Tests on Staging Success",
+                            body: "The integration tests on the staging environment passed successfully. Please check the logs for more details.",
+                            mimeType: 'text/html',
+                            attachLog: true
+                        )
                     } else {
                         echo 'Integration Tests on Staging failed.'
+                        emailext(
+                            to: "${EMAIL_TO}",
+                            subject: "Jenkins: Integration Tests on Staging Failure",
+                            body: "The integration tests on the staging environment failed. Please check the logs for more details.",
+                            mimeType: 'text/html',
+                            attachLog: true
+                        )
                     }
                 }
             }
@@ -100,9 +124,16 @@ pipeline {
 
         stage('Deploy to Production') {
             steps {
-                echo 'Stage 7: Deploy to Production - Deploying the application to AWS EC2 Production instance...'
-                // Simulate deployment
-                echo 'Deploying to AWS EC2 Production'
+                echo 'Stage 7: Deploy to Production - Deploying to AWS EC2 Production...'
+                // Simulate deployment to production
+                echo 'Deploying application to production server'
+                emailext(
+                    to: "${EMAIL_TO}",
+                    subject: "Jenkins: Deploy to Production Success",
+                    body: "The application was deployed to the production environment successfully.",
+                    mimeType: 'text/html',
+                    attachLog: true
+                )
             }
         }
     }
