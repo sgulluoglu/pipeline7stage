@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Stage 1: Build - Building the code using Maven...'
-                // Simulate Maven build
+                // Simulate Maven build --
                 echo 'Simulating: mvn clean install'
             }
         }
