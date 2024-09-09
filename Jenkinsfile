@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    options {
+        timestamps() // Adds timestamps to console output
+        buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '5')) // Discards old builds
+    }
+
     environment {
         EMAIL_TO = 'ssgulluoglu@gmail.com' // The recipient for the email notification
     }
@@ -116,5 +121,3 @@ pipeline {
         }
     }
 }
-
-
