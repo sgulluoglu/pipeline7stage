@@ -1,5 +1,4 @@
-pipeline 
-{ 
+pipeline { 
     agent any
 
     options {
@@ -7,12 +6,15 @@ pipeline
         buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '5')) // Discards old builds
     }
 
+    triggers {
+        githubPush() // Trigger pipeline automatically on GitHub push events
+    }
+
     environment {
         EMAIL_TO = 'ssgulluoglu@gmail.com' // The recipient for the email notification
     }
 
     stages {
-
         stage('Build') {
             steps {
                 echo 'Stage 1: Build - Building the code using Maven...'
