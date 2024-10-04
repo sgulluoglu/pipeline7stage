@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        EMAIL_TO = 'ssgulluoglu@gmail.com' // The recipient for the email notification
+        EMAIL_TO = "ssgulluoglu@gmail.com" // The recipient for the email notification
     }
 
     stages {
