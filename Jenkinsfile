@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     options {
-        timestamps() // Adds timestamps to console output ---
+        timestamps() // Adds timestamps to console output --- //doing some change to trigger the pipeline automatically
         buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '5')) // Discards old builds
     }
 
